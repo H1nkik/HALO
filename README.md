@@ -22,11 +22,10 @@
 
 INPUT: attributes, adj, labels 
 
-* STL-10 (HOG): This process is shown in [(STL-10)](https://github.com/mttk/STL10).
+* ACM, EAT, UAT, BAT, and Cornell: can be found in [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering).
 
-* Yale (HOG): This process is shown in [(Yale-FaceRecognition)](https://github.com/chenshen03/Yale-FaceRecognition). Raw data is uploaded as "yale_hog.npy".
+* Squirrel and Amazon ratings: can be found in [(Yandex Research)](https://github.com/yandex-research/heterophilous-graphs/tree/main/data).
 
-* Others: Shown in `Data process.ipynb`.
 
 ## Usage
 We provide a GPU&CPU version for all platforms (MacOS, Win, and Linux).
@@ -34,7 +33,7 @@ We provide a GPU&CPU version for all platforms (MacOS, Win, and Linux).
 Just `python TDEC.py` . 
 
 ## Acknowledgement
-We thank for their open sources of [(Awesome Deep Graph Clusteringv)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
+We thank for their open sources of [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
 We also acknowledge the [(SwAV)](https://github.com/facebookresearch/swav).
 
 
