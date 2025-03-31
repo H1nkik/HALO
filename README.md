@@ -31,7 +31,7 @@ INPUT: attributes, adj, labels
 We provide a version for all platforms (MacOS, Win, and Linux).
 
 ```bash
-CUDA_VISIBLE_DEVICES python main.py -d acm
+CUDA_VISIBLE_DEVICES=0 python main.py -d acm
 ```
 
 ## Acknowledgement
