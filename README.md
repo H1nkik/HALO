@@ -28,12 +28,14 @@ INPUT: attributes, adj, labels
 
 
 ## Usage
-We provide a GPU&CPU version for all platforms (MacOS, Win, and Linux).
+We provide a version for all platforms (MacOS, Win, and Linux).
 
-Just `python TDEC.py` . 
+```bash
+python main.py -d acm
+```
 
 ## Acknowledgement
 We thank for their open sources of [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
-We also acknowledge the [(SwAV)](https://github.com/facebookresearch/swav).
+The [(SwAV)](https://github.com/facebookresearch/swav) is also in our favour.
 
 
