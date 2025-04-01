@@ -5,7 +5,7 @@
 ## Experiments
 ![Performance](rank.png)
 
-![T-SNE-ACM](acmt-sne.png)
+![T-SNE-ACM](ACMt-sne.png)
 
 ![T-SNE-UAT](uatt-sne.png)
 
