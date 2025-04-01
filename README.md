@@ -11,7 +11,6 @@
 
 ![resrouce](resources.png)
 
-![convergence](convergence.png)
 
 ## Preparation
 **Dependency**
