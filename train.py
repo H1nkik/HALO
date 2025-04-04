@@ -30,7 +30,7 @@ def Train_gae(model, data, adj, label):
         
         swap_loss_1 = swap_loss(new_c_1,new_c_2) # original p(c|z_ij)
         swap_loss_2 = swap_loss(new_c_2,new_c_1) 
-        #loss_2 = opt.args.lam*(swap_loss_1+swap_loss_1)/2 
+         
         loss_2 = consistent_loss(swap_loss_1,swap_loss_2)
         loss = loss_1+loss_2
         loss.backward() 
