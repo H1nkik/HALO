@@ -14,9 +14,8 @@ def setup():
         opt.args.n_clusters = 4
         opt.args.n_input = 203
    
-   
     elif opt.args.dataset == "uat":
-        opt.args.lr = 7e-4
+        opt.args.lr = 8e-4
         opt.args.n_clusters = 4
         opt.args.n_input = 239
 
