@@ -3,8 +3,6 @@
 ![Static Badge](https://img.shields.io/badge/Code-PyTorch-8A2BE2)
 
 ## Experiments
-![Performance](rank.png)
-
 ![T-SNE-ACM](ACMt-sne.png)
 
 ![T-SNE-UAT](uatt-sne.png)
