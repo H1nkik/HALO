@@ -13,18 +13,14 @@ def setup():
         opt.args.lr = 1e-3
         opt.args.n_clusters = 4
         opt.args.n_input = 203
-        
-    elif opt.args.dataset == 'bat':
-        opt.args.lr = 5e-4 
-        opt.args.n_clusters = 4
-        opt.args.n_input = 81 #d
+   
    
     elif opt.args.dataset == "uat":
         opt.args.lr = 7e-4
         opt.args.n_clusters = 4
         opt.args.n_input = 239
 
-    elif opt.args.dataset == "acm": #(3025, 1870)
+    elif opt.args.dataset == "acm": 
         opt.args.n_clusters = 3
         opt.args.lr = 9e-4
         opt.args.n_input = 1870
