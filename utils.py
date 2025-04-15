@@ -228,7 +228,10 @@ def calc_loss_a(z_1, z_2, c_1, c_2, temperature=opt.args.temperature, sym=False)
     #A_sum = c1_sum + c2_sum + 2 - 2 * min_val
     diag_mask = torch.eye(A_sum.shape[0], dtype=torch.bool, device= opt.args.device) #mask
     A = torch.where(diag_mask, A_sum + sim_matrix, A_sum - sim_matrix) 
-    A_norm = A/A.sum()
+    if opt.args.dataset=='uat':
+        A_norm = A/A.sum(dim=1, keepdim=True)
+    else:
+        A_norm = A/A.sum()
 
     #final sim_matrix
     new_sim_matrix = torch.mul(A_norm, sim_matrix)
