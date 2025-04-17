@@ -2,14 +2,6 @@
 ![Static Badge](https://img.shields.io/badge/Deep_Graph_Clustering-blue)
 ![Static Badge](https://img.shields.io/badge/Code-PyTorch-8A2BE2)
 
-## Experiments
-![T-SNE-ACM](ACMt-sne.png)
-
-![T-SNE-UAT](uatt-sne.png)
-
-![resrouce](resources.png)
-
-![convergence](convergence.png)
 
 ## Preparation
 **Dependency**
