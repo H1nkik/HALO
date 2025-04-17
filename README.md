@@ -34,6 +34,10 @@ We provide a version for all platforms (MacOS, Win, and Linux).
 CUDA_VISIBLE_DEVICES=0 python main.py -d acm
 ```
 
+```bash
+CUDA_VISIBLE_DEVICES=0 python main.py -d uat
+```
+
 ## Acknowledgement
 We thank for their open sources of [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
 The [(SwAV)](https://github.com/facebookresearch/swav) is also in our favour.
