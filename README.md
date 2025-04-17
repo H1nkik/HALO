@@ -37,7 +37,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py -d acm
 ```bash
 CUDA_VISIBLE_DEVICES=0 python main.py -d uat
 ```
-Other details of para. refer to 'opt.py'. 
+Other details of para. plz refer to 'opt.py'. 
 
 ## Acknowledgement
 We thank for their open sources of [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
