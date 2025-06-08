@@ -67,4 +67,6 @@ class GAEC(nn.Module):
     def forward(self, x, adj):
         z_igae = self.encoder(x, adj)
         c = self.cluster(z_igae)
+        #if opt.args.dataset =="eat":
+            #z_igae = F.normalize(z_igae, p=2, dim=1)
         return z_igae, c
