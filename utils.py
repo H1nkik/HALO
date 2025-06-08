@@ -33,7 +33,7 @@ def setup():
         
     elif opt.args.dataset == "cornell":
         opt.args.n_clusters = 5
-        opt.args.lr = 1e-3
+        opt.args.lr = 5e-4
         opt.args.n_input = 1703
         
     elif opt.args.dataset == "amar":
