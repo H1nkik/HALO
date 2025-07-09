@@ -22,9 +22,9 @@
 
 INPUT: attributes, adj, labels 
 
-* ACM, EAT, UAT, BAT, and Cornell: can be found in [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering).
+* ACM, EAT, UAT, and Cornell: can be found in [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering).
 
-* Squirrel and Amazon ratings: can be found in [(Yandex Research)](https://github.com/yandex-research/heterophilous-graphs/tree/main/data).
+* Squirrel and Amazon: can be found in [(Yandex Research)](https://github.com/yandex-research/heterophilous-graphs/tree/main/data).
 
 
 ## Usage
