@@ -41,6 +41,6 @@ Other details of para. plz refer to 'opt.py'.
 
 ## Acknowledgement
 We thank for their open sources of [(Awesome Deep Graph Clustering)](https://github.com/yueliu1999/Awesome-Deep-Graph-Clustering) that contributes a lot to this community.
-The [(SwAV)](https://github.com/facebookresearch/swav) is also in our favour.
+
 
 
