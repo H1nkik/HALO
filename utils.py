@@ -134,6 +134,13 @@ def load_graph_data(dataset_name, show_details=False):
     adj = np.load(load_path+"_adj.npy", allow_pickle=True)
     cluster_num = len(np.unique(label))
     node_num = feat.shape[0] #
+    upper_adj = np.triu(adj, k=1)
+    edge_row, edge_col = np.nonzero(upper_adj)
+    undirected_edge_num = int(edge_row.shape[0])
+    avg_degree = 2 * undirected_edge_num / node_num if node_num else 0.0
+    homophily_rate = (np.sum(label[edge_row] == label[edge_col]) / undirected_edge_num
+                      if undirected_edge_num else 0.0)
+    
     
     if show_details:
         print("++++++++++++++++++++++++++++++")
@@ -143,7 +150,9 @@ def load_graph_data(dataset_name, show_details=False):
         print("feature shape:  ", feat.shape)
         print("label shape:    ", label.shape)
         print("adj shape:      ", adj.shape)
-        print("undirected edge num:   ", int(np.nonzero(adj)[0].shape[0]/2))
+        print("undirected edge num:   ", undirected_edge_num)
+        print("average degree:        {:.4f}".format(avg_degree))
+        print("homophily rate:        {:.4f}".format(homophily_rate))
         print("Cluster num:           ", cluster_num)
         print("category distribution: ")
         for i in range(max(label)+1):
@@ -361,4 +370,3 @@ def count_parameters(model):
     """
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     return round(num_params / 1e6, 6)
-
