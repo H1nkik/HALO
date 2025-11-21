@@ -1,5 +1,5 @@
 # HALO
-![Static Badge](https://img.shields.io/badge/Deep_Graph_Clustering-blue)
+![Static Badge](https://img.shields.io/badge/Uncertain_Deep_Clustering-blue)
 ![Static Badge](https://img.shields.io/badge/Code-PyTorch-8A2BE2)
 
 
