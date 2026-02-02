@@ -10,7 +10,7 @@
 
 * cuda == 11.0
 
-* torch == 1.7.1
+* torch == 1.7.1 (torch >= 1.7.1 (>= 1.12 for MPS on Apple Silicon))
 
 * numpy == 1.24.3
 
