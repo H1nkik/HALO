@@ -37,6 +37,11 @@ CUDA_VISIBLE_DEVICES=0 python main.py -d acm
 ```bash
 CUDA_VISIBLE_DEVICES=0 python main.py -d uat
 ```
+
+```bash
+python main.py -d cornell --device 'mps' --model_type graphsage
+```
+
 Other details of para. plz refer to 'opt.py'. 
 
 ## Acknowledgement
