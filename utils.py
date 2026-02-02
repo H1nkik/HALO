@@ -7,8 +7,43 @@ from munkres import Munkres
 from sklearn.metrics import adjusted_rand_score as ari_score
 from sklearn.metrics.cluster import normalized_mutual_info_score as nmi_score
 
+def get_device():
+    """
+    自动检测并返回最佳可用设备
+    返回: 'mps', 'cuda', 或 'cpu'
+    """
+    if torch.backends.mps.is_available():
+        return 'mps'
+    elif torch.cuda.is_available():
+        return 'cuda'
+    else:
+        return 'cpu'
+
+def ensure_float32(tensor, device=None):
+    """
+    确保tensor是float32类型，并移动到指定设备
+    这对于MPS兼容性至关重要（MPS不支持float64）
+    """
+    if device is None:
+        device = getattr(opt.args, 'device', 'cpu')
+    
+    if isinstance(tensor, np.ndarray):
+        # 从numpy转换时，确保是float32
+        tensor = torch.from_numpy(tensor.astype(np.float32))
+    elif isinstance(tensor, torch.Tensor):
+        # 确保是float32
+        tensor = tensor.float()
+    
+    return tensor.to(device)
+
 def setup():
+    """设置参数（根据数据集和模型类型）"""
     setup_seed(opt.args.seed)
+    
+    # Get model type (default to 'gae' if not specified)
+    model_type = getattr(opt.args, 'model_type', 'gae').lower()
+    
+    # ========== GCN (GAE) 默认参数设置 ==========
     if opt.args.dataset == 'eat':
         opt.args.lr = 1e-3
         opt.args.n_clusters = 4
@@ -23,7 +58,7 @@ def setup():
         opt.args.n_clusters = 3
         opt.args.lr = 9e-4
         opt.args.n_input = 1870
-        opt.args.alpha_value=0.1
+        opt.args.alpha_value=0.4
         opt.args.sinkhorn_iterations=4
         opt.args.epochs = 100 
         opt.args.epsilon = 0.2
@@ -49,14 +84,105 @@ def setup():
     # other new datasets
     else:
         opt.args.lr = 1e-3
+    
+    # ========== GraphSAGE  ==========
+    if model_type == 'graphsage':
+        if opt.args.dataset == 'eat':
+            opt.args.lr = 3e-3   
+            opt.args.gae_n_enc_1 = 1000  
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2  
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 400
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
+   
+        elif opt.args.dataset == "uat":
+            opt.args.lr = 2e-3
+            opt.args.gae_n_enc_1 = 1000
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 400
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
+
+        elif opt.args.dataset == "acm": 
+            opt.args.lr = 2e-3
+            opt.args.gae_n_enc_1 = 512
+            opt.args.gae_n_enc_2 = 150
+            opt.args.gae_n_enc_3 = 30
+            opt.args.alpha_value = 0.1
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 100
+            opt.args.epsilon = 0.2
+            opt.args.sinkhorn_iterations = 4
+            
+        elif opt.args.dataset == "cornell":
+            opt.args.lr = 4e-3
+            opt.args.gae_n_enc_1 = 1000
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 400
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
+            
+        elif opt.args.dataset == "amar":
+            opt.args.lr = 4e-3
+            opt.args.gae_n_enc_1 = 1000
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 100
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
+            
+        elif opt.args.dataset == "sq":
+            opt.args.lr = 4e-3
+            opt.args.gae_n_enc_1 = 1000
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 100
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
+        # other new datasets
+        else:
+            opt.args.lr = 1e-3
+            opt.args.gae_n_enc_1 = 1000
+            opt.args.gae_n_enc_2 = 500
+            opt.args.gae_n_enc_3 = 500
+            opt.args.alpha_value = 0.2
+            opt.args.drop_edge = 0.1
+            opt.args.epochs = 400
+            opt.args.epsilon = 0.05
+            opt.args.sinkhorn_iterations = 3
         
-    print("---------------------")
-    print("dataset      : {}".format(opt.args.dataset))
-    print("device       : {}".format(opt.args.device))
-    print("learning rate: {}".format(opt.args.lr))
-    print("lambda       : {}".format(opt.args.lam))
-    print("epochs       : {}".format(opt.args.epochs))
-    print("---------------------")
+    print("=" * 60)
+    print("配置参数")
+    print("=" * 60)
+    print("数据集        : {}".format(opt.args.dataset))
+    print("模型类型      : {}".format(model_type))
+    print("设备          : {}".format(opt.args.device))
+    print("学习率        : {}".format(opt.args.lr))
+    print("Lambda        : {}".format(opt.args.lam))
+    print("训练轮数      : {}".format(opt.args.epochs))
+    if model_type == 'graphsage':
+        print("GraphSAGE参数:")
+        print("  gae_n_enc_1  : {}".format(opt.args.gae_n_enc_1))
+        print("  gae_n_enc_2  : {}".format(opt.args.gae_n_enc_2))
+        print("  gae_n_enc_3  : {}".format(opt.args.gae_n_enc_3))
+        print("  alpha_value  : {}".format(opt.args.alpha_value))
+        print("  drop_edge    : {}".format(opt.args.drop_edge))
+        print("  sage_aggr    : {}".format(opt.args.sage_aggr))
+        print("  sage_dropout : {}".format(opt.args.sage_dropout))
+    print("=" * 60)
 
 
 def cluster_acc(y_true, y_pred):
@@ -160,26 +286,34 @@ def load_graph_data(dataset_name, show_details=False):
             print(len(label[np.where(label == i)]))
         print("++++++++++++++++++++++++++++++")
 
-    return feat, label, torch.tensor(adj).float(), node_num, cluster_num
+    # 确保adj是float32（MPS兼容性）
+    adj_tensor = torch.from_numpy(adj.astype(np.float32))
+    return feat, label, adj_tensor, node_num, cluster_num
 
 
 def normalize_adj(adj, self_loop=True, symmetry=False):
     """
     normalize the adj matrix
-    :param adj: input adj matrix
+    :param adj: input adj matrix (torch.Tensor or numpy array)
     :param self_loop: if add the self loop or not
     :param symmetry: symmetry normalize or not
-    :return: the normalized adj matrix
+    :return: the normalized adj matrix (numpy array, float32)
     """
+    # 转换为numpy（如果是tensor）
+    if isinstance(adj, torch.Tensor):
+        adj_np = adj.cpu().numpy().astype(np.float32)
+    else:
+        adj_np = adj.astype(np.float32)
+    
     # add the self_loop
     if self_loop:
-        adj_tmp = adj + np.eye(adj.shape[0])
+        adj_tmp = adj_np + np.eye(adj_np.shape[0], dtype=np.float32)
     else:
-        adj_tmp = adj
+        adj_tmp = adj_np
 
     # calculate degree matrix and it's inverse matrix
-    d = np.diag(adj_tmp.sum(0))
-    d_inv = np.linalg.inv(d)
+    d = np.diag(adj_tmp.sum(0)).astype(np.float32)
+    d_inv = np.linalg.inv(d).astype(np.float32)
 
     # symmetry normalize: D^{-0.5} A D^{-0.5}
     if symmetry:
@@ -189,7 +323,9 @@ def normalize_adj(adj, self_loop=True, symmetry=False):
     # non-symmetry normalize: D^{-1} A
     else:
         norm_adj = np.matmul(d_inv, adj_tmp)
-    return norm_adj
+    
+    # 确保返回float32
+    return norm_adj.astype(np.float32)
 
 
 def setup_seed(seed):
@@ -234,7 +370,10 @@ def calc_loss_a(z_1, z_2, c_1, c_2, temperature=opt.args.temperature, sym=False)
     #c2_sum = c_2.sum(dim=-1, keepdim=True).T
     #min_val = torch.min(c_1[:, None, :], c_2[None, :, :]).sum(dim=-1)
     #A_sum = c1_sum + c2_sum + 2 - 2 * min_val
-    diag_mask = torch.eye(A_sum.shape[0], dtype=torch.bool, device= opt.args.device) #mask
+    # 确保所有tensor都是float32（MPS兼容性）
+    A_sum = A_sum.float()
+    sim_matrix = sim_matrix.float()
+    diag_mask = torch.eye(A_sum.shape[0], dtype=torch.bool, device=opt.args.device) #mask
     A = torch.where(diag_mask, A_sum + sim_matrix, A_sum - sim_matrix) 
     if opt.args.dataset=='uat':
         A_norm = A/A.sum(dim=1, keepdim=True)
@@ -304,18 +443,21 @@ def gaussian_noised_feature(X):
     """
     add gaussian noise to the attribute matrix X
     Args:
-        X: the attribute matrix
-    Returns: the noised attribute matrix X_tilde
+        X: the attribute matrix (torch.Tensor, float32)
+    Returns: the noised attribute matrix X_tilde (float32)
     """
-    N_1 = torch.Tensor(np.random.normal(1, 0.1, X.shape)).to(opt.args.device)
-    N_2 = torch.Tensor(np.random.normal(1, 0.1, X.shape)).to(opt.args.device)
+    # 确保噪声是float32（MPS兼容性）
+    N_1 = torch.from_numpy(np.random.normal(1, 0.1, X.shape).astype(np.float32)).to(X.device)
+    N_2 = torch.from_numpy(np.random.normal(1, 0.1, X.shape).astype(np.float32)).to(X.device)
     X_tilde1 = X * N_1
     X_tilde2 = X * N_2
     return X_tilde1, X_tilde2
 
 
 def diffusion_adj_torch(adj, transport_rate):
-    adj_tmp = adj + torch.eye(adj.size(0), device=adj.device)  # add self loop
+    # 确保adj是float32（MPS兼容性）
+    adj = adj.float()
+    adj_tmp = adj + torch.eye(adj.size(0), dtype=torch.float32, device=adj.device)  # add self loop
 
     # Calculate degree matrix and its inverse
     d = torch.diag(adj_tmp.sum(0))
@@ -326,25 +468,25 @@ def diffusion_adj_torch(adj, transport_rate):
     norm_adj = sqrt_d_inv @ adj_tmp @ sqrt_d_inv
 
     # Calculate graph diffusion
-    
-    identity = torch.eye(d.size(0), device=adj.device)
+    identity = torch.eye(d.size(0), dtype=torch.float32, device=adj.device)
     diff_adj = transport_rate * torch.linalg.inv(identity - (1 - transport_rate) * norm_adj)
 
-    return diff_adj
+    return diff_adj.float()  # 确保返回float32
 
 
 def remove_edge_randomly(A, remove_rate=0.1):
     """
     remove edge randomly
     Args:
-        A: the origin adjacency matrix
+        A: the origin adjacency matrix (torch.Tensor, float32)
         remove_rate: the rate of removing linkage relation
     Returns:
-        Am: edge-masked adjacency matrix
+        Am: edge-masked adjacency matrix (float32)
     """
+    # 确保A是float32（MPS兼容性）
+    A = A.float()
     # remove edges randomly
     n_node = A.shape[0]
-    #A = torch.from_numpy(A)
     for i in range(n_node):
         # find i neighbor
         neighbors = torch.where(A[i] > 0)[0]
@@ -357,7 +499,8 @@ def remove_edge_randomly(A, remove_rate=0.1):
 
     # normalize adj
     Anorm = normalize_adj(A, self_loop=True, symmetry=False)
-    Anorm = Anorm.to(opt.args.device)
+    # 确保返回float32并移动到正确设备
+    Anorm = torch.from_numpy(Anorm).float().to(opt.args.device)
     return Anorm
 #### Graph data augmentation end####
 

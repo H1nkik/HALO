@@ -2,7 +2,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 # dataset
-parser.add_argument('--device', type=str, default='cuda', help='device.')
+parser.add_argument('--device', type=str, default='auto', help='device: auto (auto-detect), mps, cuda, or cpu')
 parser.add_argument('-id', '--device_id', type=int, default='0', help='device id')
 
 parser.add_argument('-d', '--dataset', type=str, default='eat', help='dataset name')
@@ -18,6 +18,9 @@ parser.add_argument('-g1','--gae_n_enc_1', type=int, default=1000)
 parser.add_argument('-g2','--gae_n_enc_2', type=int, default=500)
 parser.add_argument('-g3','--gae_n_enc_3', type=int, default=500)
 parser.add_argument('-t','--temperature', type=float, default=0.1)
+parser.add_argument('--model_type', type=str, default='gae', choices=['gae', 'graphsage'], help='Model type: gae (GCN-based) or graphsage (GraphSAGE-based)')
+parser.add_argument('--sage_aggr', type=str, default='mean', choices=['mean', 'max'], help='Aggregation method for GraphSAGE: mean or max')
+parser.add_argument('--sage_dropout', type=float, default=0.0, help='Dropout rate for GraphSAGE layers')
 
 
 # training
