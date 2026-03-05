@@ -60,6 +60,7 @@ If you find HALO useful in your research, please consider citing:
   year = {2026},
   volume = {},
   number = {},
-  pages = {}
+  pages = {109657},
+
 }
 
