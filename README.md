@@ -57,10 +57,8 @@ If you find HALO useful in your research, please consider citing:
   title = {HALO: Hardness-Aware Bilevel-Inspired Contrastive Graph Clustering},
   author = {Yuchen Zhu and Kuang Zhou and Haishan Ye and Guang Dai and Ivor W.Tsang},
   journal = {International Journal of Approximate Reasoning},
-  year = {2026},
-  volume = {},
-  number = {},
+  volume = {193},
   pages = {109657},
-
+  year = {2026}
 }
 
